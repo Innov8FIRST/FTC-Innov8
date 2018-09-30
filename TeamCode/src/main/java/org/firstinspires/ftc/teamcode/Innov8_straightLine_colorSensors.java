@@ -22,10 +22,14 @@ public class Innov8_straightLine_colorSensors extends LinearOpMode {
     int FDrive = 2;
     int teamColor = 0;   //0 = red   or 1 = blue
     int taskNumber = 0;   //used to determine the step that should be executed
-    double multR = 0.1;
-    double multL = 0.02;
-    double correctL = 1;  // 1 or -1
-    double correctR = 1;  //1 or -1
+    double multR = 0.2;
+    double multL = 0.05;
+    double correctL = -1;  // 1 or -1
+    double correctR = -1;  //1 or -1
+    int while1 = 0;
+    int while2 = 0;
+    double PowerR = 0.5 * multR * correctR;
+    double PowerL = 1 * multL * correctL;
 
     public void runOpMode() throws InterruptedException {
 
@@ -33,22 +37,31 @@ public class Innov8_straightLine_colorSensors extends LinearOpMode {
 
         startPositionR = robot.rightMotor.getCurrentPosition();
         startPositionL = robot.leftMotor.getCurrentPosition();
+        telemetry.addData("Case", taskNumber);
+        telemetry.addData("RightRed", robot.rightFruity.red());
+        telemetry.addData("RightBlue", robot.rightFruity.blue());
+        telemetry.addData("right", robot.rightMotor.getCurrentPosition());
+        telemetry.addData("left", robot.leftMotor.getCurrentPosition());
         telemetry.addData("startR", startPositionR);
+        telemetry.addData("endR", endPositionR);
+        telemetry.addData("LeftRed", robot.leftFruity.red());
+        telemetry.addData("LeftBlue", robot.leftFruity.blue());
         telemetry.addData("startL", startPositionL);
-        telemetry.addData("CurrentR", robot.rightMotor.getCurrentPosition());
-        telemetry.addData("CurrentL", robot.leftMotor.getCurrentPosition());
-        telemetry.addData("EndR", endPositionR);
-        telemetry.addData("EndL", endPositionL);
-        telemetry.addData("RightPower",robot.rightMotor.getPower());
-        telemetry.addData("LeftPower",robot.leftMotor.getPower());
+        telemetry.addData("endL", endPositionL);
+        telemetry.addData("RightPower", PowerR);
+        telemetry.addData("LeftPower", PowerL);
+        telemetry.addData("Task", taskNumber);
+        telemetry.addData("While1", while1);
+        telemetry.addData("While2", while2);
         telemetry.update();
-
-
 
         waitForStart();
 
+        robot.rightMotor.setPower(PowerR);
+        robot.leftMotor.setPower(PowerL);
 
         while (opModeIsActive() && taskNumber != 9999) {
+            while1 = while1 + 1;
             telemetry.addData("Case", taskNumber);
             telemetry.addData("RightRed", robot.rightFruity.red());
             telemetry.addData("RightBlue", robot.rightFruity.blue());
@@ -60,31 +73,33 @@ public class Innov8_straightLine_colorSensors extends LinearOpMode {
             telemetry.addData("LeftBlue", robot.leftFruity.blue());
             telemetry.addData("startL", startPositionL);
             telemetry.addData("endL", endPositionL);
-            telemetry.addData("RightPower",robot.rightMotor.getPower());
-            telemetry.addData("LeftPower",robot.leftMotor.getPower());
+            telemetry.addData("RightPower", PowerR);
+            telemetry.addData("LeftPower", PowerL);
+            telemetry.addData("Task", taskNumber);
+            telemetry.addData("While1", while1);
+            telemetry.addData("While2", while2);
             telemetry.update();
 
-            robot.rightMotor.setPower(10 * multR * correctR);
-            robot.leftMotor.setPower(10 * multL * correctL);
+            if (robot.rightMotor.getPower() == 0 && robot.leftMotor.getPower() == 0) {
 
-            while  (robot.leftMotor.getPower() != 0 || robot.rightMotor.getPower() != 0)  {
-
+                while2 = while2 + 1;
+                telemetry.addData("While1", while1);
+                telemetry.addData("While2", while2);
                 telemetry.update();
-
-                if (robot.rightFruity.red() >= 450) {
-
-                    robot.rightMotor.setPower(0);
-                }
-
-                if (robot.leftFruity.red() >= 300) {
-
-                    robot.leftMotor.setPower(0);
-                }
-
-
-
-            taskNumber = 9999;
+                taskNumber = 9999;
             }
+            if (robot.rightFruity.red() >= 450) {
+
+                robot.rightMotor.setPower(0);
+                PowerR = 0;
+            }
+
+            if (robot.leftFruity.red() >= 300) {
+                robot.leftMotor.setPower(0);
+                PowerL = 0;
+
+            }
+
         }
     }
 }
