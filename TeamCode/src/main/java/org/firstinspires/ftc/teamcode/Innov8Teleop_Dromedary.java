@@ -114,7 +114,7 @@ public class Innov8Teleop_Dromedary extends LinearOpMode {
             else {
                 right  = -gamepad1.right_stick_y;
             }
-            // Run wheels in POV mode (note: The joystick goes negative when pushed forwards, so negate it)
+            //  Run wheels in POV mode (note: The joystick goes negative when pushed forwards, so negate it)
             // In this mode the Left stick moves the robot fwd and back, the Right stick turns left and right.
             /* left  = gamepad1.left_stick_y;
             right = gamepad1.right_stick_y; */
