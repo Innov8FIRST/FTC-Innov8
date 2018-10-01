@@ -49,12 +49,12 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@TeleOp(name="Innob8Teleop_Dromedary", group="Dromedary")
+@TeleOp(name="Innob8Teleop_Tinkerbell", group="Tinkerbell")
 // @Disabled
-public class Innov8Teleop_Dromedary extends LinearOpMode {
+public class Innov8Teleop_Tinkerbell extends LinearOpMode {
 
     /* Declare OpMode members. */
-    HardwareInnov8Bot robot = new HardwareInnov8Bot();   // Use a Innov8's hardware
+    HardwareInnov8Tinkerbell robot = new HardwareInnov8Tinkerbell();   // Use a Innov8's hardware
 
 
     @Override
@@ -87,9 +87,6 @@ public class Innov8Teleop_Dromedary extends LinearOpMode {
         telemetry.addData("Say", "Hello Driver");    //
         telemetry.update();
 
-        robot.jewelArm.setPosition(END_SERVO); // Setting paddles to "up"
-        robot.leftJewelArm.setPosition(END_SERVO);
-        robot.bigfoot.setPosition(MID_SERVO);
 
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
@@ -114,10 +111,10 @@ public class Innov8Teleop_Dromedary extends LinearOpMode {
             else {
                 right  = -gamepad1.right_stick_y;
             }
-            //  Run wheels in POV mode (note: The joystick goes negative when pushed forwards, so negate it)
+            // Run wheels in POV mode (note: The joystick goes negative when pushed forwards, so negate it)
             // In this mode the Left stick moves the robot fwd and back, the Right stick turns left and right.
-            /* left  = gamepad1.left_stick_y;
-            right = gamepad1.right_stick_y; */
+             left  = gamepad1.left_stick_y;
+            right = gamepad1.right_stick_y;
 
             // Normalize the values so neither exceed +/- 1.0
             max = Math.max(Math.abs(left), Math.abs(right));
@@ -131,6 +128,8 @@ public class Innov8Teleop_Dromedary extends LinearOpMode {
             robot.leftMotor.setPower(left*leftDirection*correctL*reduceDriveSpeed);
             robot.rightMotor.setPower(right*rightDirection*correctR*reduceDriveSpeed);
 
+            /*
+
             if (gamepad1.left_bumper) {
                 robot.handL.setPosition(OPEN_HAND_L);
                 robot.handR.setPosition(OPEN_HAND_R);
@@ -140,6 +139,8 @@ public class Innov8Teleop_Dromedary extends LinearOpMode {
                 robot.handL.setPosition(CLOSE_HAND_L);
                 robot.handR.setPosition(CLOSE_HAND_R);
             }
+
+            */
 
             if (gamepad1.dpad_up)
             {
@@ -151,6 +152,8 @@ public class Innov8Teleop_Dromedary extends LinearOpMode {
                 reduceDriveSpeed = 0.2;
             }
 
+            /*
+
             if (gamepad1.dpad_right) { // down
                 robot.leftJewelArm.setPosition(0.38);
                 robot.jewelArm.setPosition(0.1);
@@ -161,6 +164,8 @@ public class Innov8Teleop_Dromedary extends LinearOpMode {
                 robot.jewelArm.setPosition(END_SERVO);
             }
 
+            */
+
             if (gamepad1.right_stick_button) {
                 rightDirection = rightDirection*-1;
             }
@@ -169,7 +174,9 @@ public class Innov8Teleop_Dromedary extends LinearOpMode {
                 leftDirection = leftDirection * -1;
             }
 
+            /*
             while(gamepad1.y) { // opens hand
+
 //                if(robot.handL.getPosition()<0.4){
 //                  STOP
 //                }
@@ -184,12 +191,12 @@ public class Innov8Teleop_Dromedary extends LinearOpMode {
                 robot.handL.setPosition(robot.handL.getPosition()-0.005);
                 robot.handR.setPosition(robot.handR.getPosition()+0.005);
             }
-
+            */
 
             // Use gamepad buttons to get color sensor reading
-            if (gamepad1.b) {
-                robot.FruitySensor.enableLed(true);
-            }
+            //if (gamepad1.b) {
+            //    robot.leftFruity.enableLed(true);
+            //}
 
             lift  = gamepad2.left_stick_y;
             turn = -gamepad2.right_stick_y;
@@ -203,7 +210,7 @@ public class Innov8Teleop_Dromedary extends LinearOpMode {
             }
 
 
-            robot.glypht.setPower(lift);
+            /*robot.glypht.setPower(lift);
             robot.arm.setPower(turn*reduceSpeedArm);
 
             startPositionGlypht = robot.glypht.getCurrentPosition();
@@ -237,16 +244,21 @@ public class Innov8Teleop_Dromedary extends LinearOpMode {
             {
                 robot.bigfoot.setPosition(.7);
             }
-
+            */
 
             // Send telemetry message to signify robot running;
             telemetry.addData("lift",  "%.2f", left);
             telemetry.addData("turn", "%.2f", right);
-            telemetry.addData("Fruity1Blue", robot.FruitySensor.blue());
-            telemetry.addData("Fruity1Red", robot.FruitySensor.red());
-            telemetry.addData("Fruity1Green", robot.FruitySensor.green());
-            telemetry.addData("startGlypht ", startPositionGlypht);
-            telemetry.addData("CurrentGlypht", robot.glypht.getCurrentPosition());
+            /*
+            telemetry.addData("LeftFruityBlue", robot.leftFruity.blue());
+            telemetry.addData("LeftFruityRed", robot.leftFruity.red());
+            telemetry.addData("LeftFruityGreen", robot.leftFruity.green());
+            telemetry.addData("RightFruityBlue", robot.rightFruity.blue());
+            telemetry.addData("RightFruityRed", robot.rightFruity.red());
+            telemetry.addData("RightFruityGreen", robot.rightFruity.green());
+            */
+           // telemetry.addData("startGlypht ", startPositionGlypht);
+           // telemetry.addData("CurrentGlypht", robot.glypht.getCurrentPosition());
             telemetry.addData("LDir: ", leftDirection);
             telemetry.addData("RDir: ",rightDirection);
             telemetry.addData("rightM", robot.rightMotor.getPower());
