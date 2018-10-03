@@ -34,8 +34,8 @@ public class HardwareInnov8Tinkerbell {
 
     //  public Servo    claw         = null;
 
-    //public ColorSensor leftFruity = null;
-    //public ColorSensor rightFruity = null;
+    public ColorSensor leftFruity = null;
+    public ColorSensor rightFruity = null;
 
     public static final double MID_SERVO = 0.5;
     public static final double ARM_UP_POWER = 0.45;
@@ -62,8 +62,8 @@ public class HardwareInnov8Tinkerbell {
         rightMotor = hwMap.dcMotor.get("rightMotor");
         leftMotor.setDirection(DcMotor.Direction.FORWARD); // Set to REVERSE if using AndyMark motors
         rightMotor.setDirection(DcMotor.Direction.REVERSE);// Set to FORWARD if using AndyMark motors
-        //leftFruity = hwMap.colorSensor.get("leftFruity");
-        //rightFruity = hwMap.colorSensor.get("rightFruity");
+        leftFruity = hwMap.colorSensor.get("leftFruity");
+        rightFruity = hwMap.colorSensor.get("rightFruity");
         leftChain = hwMap.dcMotor.get("leftChain");
         leftChain.setDirection(DcMotor.Direction.FORWARD);
         rightChain = hwMap.dcMotor.get("rightChain");
