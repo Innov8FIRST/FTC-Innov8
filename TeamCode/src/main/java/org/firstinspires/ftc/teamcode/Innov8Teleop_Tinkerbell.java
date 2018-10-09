@@ -61,6 +61,8 @@ public class Innov8Teleop_Tinkerbell extends LinearOpMode {
     public void runOpMode() throws InterruptedException {
         double left = 0;
         double right = 0;
+        double left2 = 0;
+        double right2 = 0;
         double max;
         double END_SERVO = 1; // all the way up
         double START_SERVO = 0; // all the way down
@@ -151,6 +153,40 @@ public class Innov8Teleop_Tinkerbell extends LinearOpMode {
             {
                 reduceDriveSpeed = 0.2;
             }
+
+            if (leftDirection == 1)
+            {
+                left2  = gamepad2.left_stick_y;
+            }
+
+            else {
+                left2  = -gamepad2.left_stick_y;
+            }
+
+            if (rightDirection == 1)
+            {
+                right2  = gamepad2.right_stick_y;
+            }
+
+            else {
+                right2  = -gamepad2.right_stick_y;
+            }
+            // Run wheels in POV mode (note: The joystick goes negative when pushed forwards, so negate it)
+            // In this mode the Left stick moves the robot fwd and back, the Right stick turns left and right.
+            left2  = gamepad2.left_stick_y;
+            right2 = gamepad2.right_stick_y;
+
+            // Normalize the values so neither exceed +/- 1.0
+            max = Math.max(Math.abs(left2), Math.abs(right2));
+            if (max > 1.0)
+            {
+                left2 /= max;
+                right2 /= max;
+            }
+
+            // For driving
+            robot.leftChain.setPower(left2*leftDirection*correctL*reduceDriveSpeed);
+            robot.rightChain.setPower(right2*rightDirection*correctR*reduceDriveSpeed);
 
             /*
 
@@ -263,6 +299,9 @@ public class Innov8Teleop_Tinkerbell extends LinearOpMode {
             telemetry.addData("RDir: ",rightDirection);
             telemetry.addData("rightM", robot.rightMotor.getPower());
             telemetry.addData("leftM", robot.leftMotor.getPower());
+            telemetry.addData("right2", right2);
+            telemetry.addData("left2", left2);
+
             telemetry.update();
 
             // Pause for metronome tick.  40 mS each cycle = update 25 times a second.
