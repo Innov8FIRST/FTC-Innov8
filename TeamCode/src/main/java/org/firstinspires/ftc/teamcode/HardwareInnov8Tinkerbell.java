@@ -24,13 +24,14 @@ public class HardwareInnov8Tinkerbell {
     public DcMotor leftMotor = null;
     public DcMotor rightMotor = null;
     public DcMotor leftChain = null;
-    public DcMotor rightChain = null;
+    //public DcMotor rightChain = null;
 
     // public Servo    handL        = null;
     // public Servo    handR        = null;
     // public Servo    jewelArm     = null;
     // public Servo    leftJewelArm = null;
     // public Servo    bigfoot      = null;
+    public Servo hook = null;
 
     //  public Servo    claw         = null;
 
@@ -66,14 +67,14 @@ public class HardwareInnov8Tinkerbell {
         //rightFruity = hwMap.colorSensor.get("rightFruity");
         leftChain = hwMap.dcMotor.get("leftChain");
         leftChain.setDirection(DcMotor.Direction.FORWARD);
-        rightChain = hwMap.dcMotor.get("rightChain");
-        rightChain.setDirection(DcMotor.Direction.FORWARD);
+        // rightChain = hwMap.dcMotor.get("rightChain");
+        //rightChain.setDirection(DcMotor.Direction.FORWARD);
 
         // Set all motors to zero power
         leftMotor.setPower(0);
         rightMotor.setPower(0);
         leftChain.setPower(0);
-        rightChain.setPower(0);
+        //rightChain.setPower(0);
 
         // Set all motors to run without encoders.
 
@@ -81,19 +82,21 @@ public class HardwareInnov8Tinkerbell {
         leftMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         rightMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         leftChain.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        rightChain.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+      //  rightChain.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
-                // Define and initialize ALL installed servos.
-                //  jewelArm = hwMap.servo.get("jewelArm");
-                //  jewelArm.setPosition(START_SERVO);
-                //  leftJewelArm = hwMap.servo.get("leftJewelArm");
-                //  leftJewelArm.setPosition(START_SERVO);
-                //  bigfoot = hwMap.servo.get("bigfoot");
-                //  bigfoot = hwMap.servo.get("bigfoot");
-                //  handL = hwMap.servo.get("handL");
-                //  handL.setPosition(0);
-                //  handR = hwMap.servo.get("handR");
-                //  handR.setPosition(0.4);
+        // Define and initialize ALL installed servos.
+        //  jewelArm = hwMap.servo.get("jewelArm");
+        //  jewelArm.setPosition(START_SERVO);
+        //  leftJewelArm = hwMap.servo.get("leftJewelArm");
+        //  leftJewelArm.setPosition(START_SERVO);
+        //  bigfoot = hwMap.servo.get("bigfoot");
+        //  bigfoot = hwMap.servo.get("bigfoot");
+        //  handL = hwMap.servo.get("handL");
+        //  handL.setPosition(0);
+        //  handR = hwMap.servo.get("handR");
+        //  handR.setPosition(0.4);
+        hook = hwMap.servo.get("hook");
+        hook.setPosition(START_SERVO);
     }
 
     /***

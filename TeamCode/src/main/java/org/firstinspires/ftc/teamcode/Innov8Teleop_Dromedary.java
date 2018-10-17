@@ -49,7 +49,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@TeleOp(name="Innob8Teleop_Dromedary", group="Dromedary")
+@TeleOp(name="Innov8Teleop_Dromedary", group="Dromedary")
 // @Disabled
 public class Innov8Teleop_Dromedary extends LinearOpMode {
 
