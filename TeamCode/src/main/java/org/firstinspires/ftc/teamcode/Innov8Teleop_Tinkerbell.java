@@ -50,12 +50,12 @@ import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
  * This OpMode uses the common Pushbot hardware class to define the devices on the robot.
  * All device access is managed through the HardwarePushbot class.
  * The code is structured as a LinearOpMode
- * <p>
+ *
  * This particular OpMode executes a POV Game style Teleop for a PushBot
  * In this mode the left stick moves the robot FWD and back, the Right stick turns left and right.
  * It raises and lowers the claw using the Gampad Y and A buttons respectively.
  * It also opens and closes the claws slowly using the left and right Bumper buttons.
- * <p>
+ *
  * Use Android Studios to Copy this Class, and Paste it into your team's code folder with a new name.
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
@@ -165,14 +165,21 @@ public class Innov8Teleop_Tinkerbell extends LinearOpMode {
 
             // Normalize the values so neither exceed +/- 1.0
             max = Math.max(Math.abs(left), Math.abs(right));
-            if (max > 1.0) {
+            if (max > 1.0)
+            {
                 left /= max;
                 right /= max;
             }
 
+            if (gamepad2.left_stick_y < 0) {
+                robot.leftChain.setPower(20);
+            }
+            else {
+                robot.leftChain.setPower(0);
+            }
             // For driving
-            robot.leftMotor.setPower(left * leftDirection * correctL * reduceDriveSpeed);
-            robot.rightMotor.setPower(right * rightDirection * correctR * reduceDriveSpeed);
+            robot.leftMotor.setPower(left*leftDirection*correctL*reduceDriveSpeed);
+            robot.rightMotor.setPower(right*rightDirection*correctR*reduceDriveSpeed);
 
             /*
 
@@ -188,33 +195,42 @@ public class Innov8Teleop_Tinkerbell extends LinearOpMode {
 
             */
 
-            if (gamepad1.dpad_up) {
+            if (gamepad1.dpad_up)
+            {
                 reduceDriveSpeed = 0.6;
             }
 
-            if (gamepad1.dpad_down) {
+            if (gamepad1.dpad_down)
+            {
                 reduceDriveSpeed = 0.2;
             }
 
-            if (leftDirection == 1) {
-                left2 = gamepad2.left_stick_y;
-            } else {
-                left2 = -gamepad2.left_stick_y;
+            if (leftDirection == 1)
+            {
+                left2  = gamepad2.left_stick_y;
             }
 
-            if (rightDirection == 1) {
-                right2 = gamepad2.right_stick_y;
-            } else {
-                right2 = -gamepad2.right_stick_y;
+            else {
+                left2  = -gamepad2.left_stick_y;
+            }
+
+            if (rightDirection == 1)
+            {
+                right2  = gamepad2.right_stick_y;
+            }
+
+            else {
+                right2  = -gamepad2.right_stick_y;
             }
             // Run wheels in POV mode (note: The joystick goes negative when pushed forwards, so negate it)
             // In this mode the Left stick moves the robot fwd and back, the Right stick turns left and right.
-            left2 = gamepad2.left_stick_y;
+            left2  = gamepad2.left_stick_y;
             right2 = gamepad2.right_stick_y;
 
             // Normalize the values so neither exceed +/- 1.0
             max = Math.max(Math.abs(left2), Math.abs(right2));
-            if (max > 1.0) {
+            if (max > 1.0)
+            {
                 left2 /= max;
                 right2 /= max;
             }
@@ -269,7 +285,7 @@ public class Innov8Teleop_Tinkerbell extends LinearOpMode {
             //    robot.leftFruity.enableLed(true);
             //}
 
-            lift = gamepad2.left_stick_y;
+            lift  = gamepad2.left_stick_y;
             turn = -gamepad2.right_stick_y;
 
             // Normalize the values so neither exceed +/- 1.0
