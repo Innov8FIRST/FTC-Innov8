@@ -34,6 +34,17 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.vuforia.HINT;
+import com.vuforia.Vuforia;
+
+import org.firstinspires.ftc.robotcontroller.internal.FtcRobotControllerActivity;
+import org.firstinspires.ftc.robotcore.external.ClassFactory;
+import org.firstinspires.ftc.robotcore.external.matrices.OpenGLMatrix;
+import org.firstinspires.ftc.robotcore.external.matrices.VectorF;
+import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
+import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackable;
+import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackableDefaultListener;
+import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
 
 /**
  * This OpMode uses the common Pushbot hardware class to define the devices on the robot.
@@ -54,13 +65,14 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 public class Innov8Teleop_Tinkerbell extends LinearOpMode {
 
     /* Declare OpMode members. */
-    HardwareInnov8Tinkerbell robot = new HardwareInnov8Tinkerbell();   // Use a Innov8's hardware
-
+    HardwareInnov8Tinkerbell robot = new HardwareInnov8Tinkerbell();   // Use a Innov8's hardware map
 
     @Override
     public void runOpMode() throws InterruptedException {
         double left = 0;
         double right = 0;
+        double left2 = 0;
+        double right2 = 0;
         double max;
         double END_SERVO = 1; // all the way up
         double START_SERVO = 0; // all the way down
@@ -78,6 +90,17 @@ public class Innov8Teleop_Tinkerbell extends LinearOpMode {
         double leftDirection = -1;
         double correctR = 0.9;
         double correctL = 1;
+        VuforiaLocalizer.Parameters params = new VuforiaLocalizer.Parameters(R.id.cameraMonitorViewId);
+        params.cameraDirection = VuforiaLocalizer.CameraDirection.BACK;
+        params.vuforiaLicenseKey = "AQ1M9Hr/////AAAAGWU4/VA9CkB2qgx3FSD3/fw7bv2rFbgag0jODlm8OJlj9coE/2ldwiRYwteK6A0INCjLtDrsBB5m+hphfYZjNLTb6BU7+9qGCnprf45lWm/bnlvIyB7dptTblbZ2K1Se8LSTKNhIXpA5r9cThAjUkg8PbiUfG7Qj5fD5lq3w+q+RHnIyNv2l6RjqlhHw5IF2aGQxEFmsPPa8YDjTDSGF0CFEWokxNTSe55H3etnQVysmx7mTUws0VZu7rnSgeN26RRZg91PB5xmEHi/zS7KVjLKDgktZenAht5kLHpvs2bWrHDcu6Yk+dP4I2YfPgd6gTYhxeY9Ge5rUXkufQ3y3XIffUSbhjWMRdTVNolB7/WAZ";
+        params.cameraMonitorFeedback = VuforiaLocalizer.Parameters.CameraMonitorFeedback.AXES;
+
+        VuforiaLocalizer vuforia = ClassFactory.createVuforiaLocalizer(params);
+        Vuforia.setHint(HINT.HINT_MAX_SIMULTANEOUS_IMAGE_TARGETS, 1);
+
+        VuforiaTrackables minerals = vuforia.loadTrackablesFromAsset("Minerals_OT");
+        minerals.get(0).setName("block");
+
         /* Initialize the hardware variables.
          * The init() method of the hardware class does all the work here
          */
@@ -91,8 +114,28 @@ public class Innov8Teleop_Tinkerbell extends LinearOpMode {
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
 
+        minerals.activate();
+
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {
+
+            for(VuforiaTrackable mineral : minerals) {  //For each loop for vuforia minerals
+                OpenGLMatrix pose = ((VuforiaTrackableDefaultListener) mineral.getListener()).getPose();
+
+                if(pose!= null){
+                    VectorF translation = pose.getTranslation();
+
+                    telemetry.addData(mineral.getName() + "-Translation", translation);
+
+                    double degreesToTurn = Math.toDegrees(Math.atan2(translation.get(1), translation.get(2)));
+
+                    telemetry.addData(mineral.getName() + "-Degrees", degreesToTurn);
+
+
+                }
+            }
+
+            telemetry.update();
 
             if (leftDirection == 1)
             {
@@ -164,6 +207,40 @@ public class Innov8Teleop_Tinkerbell extends LinearOpMode {
             {
                 reduceDriveSpeed = 0.2;
             }
+
+            if (leftDirection == 1)
+            {
+                left2  = gamepad2.left_stick_y;
+            }
+
+            else {
+                left2  = -gamepad2.left_stick_y;
+            }
+
+            if (rightDirection == 1)
+            {
+                right2  = gamepad2.right_stick_y;
+            }
+
+            else {
+                right2  = -gamepad2.right_stick_y;
+            }
+            // Run wheels in POV mode (note: The joystick goes negative when pushed forwards, so negate it)
+            // In this mode the Left stick moves the robot fwd and back, the Right stick turns left and right.
+            left2  = gamepad2.left_stick_y;
+            right2 = gamepad2.right_stick_y;
+
+            // Normalize the values so neither exceed +/- 1.0
+            max = Math.max(Math.abs(left2), Math.abs(right2));
+            if (max > 1.0)
+            {
+                left2 /= max;
+                right2 /= max;
+            }
+
+            // For driving
+            robot.leftChain.setPower(left2*leftDirection*correctL*reduceDriveSpeed);
+            robot.rightChain.setPower(right2*rightDirection*correctR*reduceDriveSpeed);
 
             /*
 
@@ -276,6 +353,9 @@ public class Innov8Teleop_Tinkerbell extends LinearOpMode {
             telemetry.addData("RDir: ", rightDirection);
             telemetry.addData("rightM", robot.rightMotor.getPower());
             telemetry.addData("leftM", robot.leftMotor.getPower());
+            telemetry.addData("right2", right2);
+            telemetry.addData("left2", left2);
+
             telemetry.update();
 
             // Pause for metronome tick.  40 mS each cycle = update 25 times a second.
