@@ -49,7 +49,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@TeleOp(name="Innob8Teleop_Tinkerbell", group="Tinkerbell")
+@TeleOp(name = "Innob8Teleop_Tinkerbell", group = "Tinkerbell")
 // @Disabled
 public class Innov8Teleop_Tinkerbell extends LinearOpMode {
 
@@ -72,7 +72,7 @@ public class Innov8Teleop_Tinkerbell extends LinearOpMode {
         double OPEN_HAND_R = 0.5;
         double CLOSE_HAND_R = 0.9;
         double startPositionGlypht = 0;
-        double reduceSpeedArm = 0.5;  
+        double reduceSpeedArm = 0.5;
         double reduceDriveSpeed = 0.4;
         double rightDirection = -1;
         double leftDirection = -1;
@@ -96,24 +96,24 @@ public class Innov8Teleop_Tinkerbell extends LinearOpMode {
 
             if (leftDirection == 1)
             {
-                left  = gamepad1.left_stick_y;
+                left = gamepad1.left_stick_y;
             }
 
             else {
-                left  = -gamepad1.left_stick_y;
+                left = -gamepad1.left_stick_y;
             }
 
             if (rightDirection == 1)
             {
-                right  = gamepad1.right_stick_y;
+                right = gamepad1.right_stick_y;
             }
 
             else {
-                right  = -gamepad1.right_stick_y;
+                right = -gamepad1.right_stick_y;
             }
             // Run wheels in POV mode (note: The joystick goes negative when pushed forwards, so negate it)
             // In this mode the Left stick moves the robot fwd and back, the Right stick turns left and right.
-             left  = gamepad1.left_stick_y;
+            left = gamepad1.left_stick_y;
             right = gamepad1.right_stick_y;
 
             // Normalize the values so neither exceed +/- 1.0
@@ -124,9 +124,22 @@ public class Innov8Teleop_Tinkerbell extends LinearOpMode {
                 right /= max;
             }
 
+            if (gamepad2.right_stick_y < 0) {
+                robot.rightChain.setPower(20);
+            }
+            else {
+                robot.rightChain.setPower(0);
+            }
+
+            if (gamepad2.left_stick_y < 0) {
+                robot.leftChain.setPower(20);
+            }
+            else {
+                robot.leftChain.setPower(0);
+            }
             // For driving
-            robot.leftMotor.setPower(left*leftDirection*correctL*reduceDriveSpeed);
-            robot.rightMotor.setPower(right*rightDirection*correctR*reduceDriveSpeed);
+            robot.leftMotor.setPower(left * leftDirection * correctL * reduceDriveSpeed);
+            robot.rightMotor.setPower(right * rightDirection * correctR * reduceDriveSpeed);
 
             /*
 
@@ -167,7 +180,7 @@ public class Innov8Teleop_Tinkerbell extends LinearOpMode {
             */
 
             if (gamepad1.right_stick_button) {
-                rightDirection = rightDirection*-1;
+                rightDirection = rightDirection * -1;
             }
 
             if (gamepad1.left_stick_button) {
@@ -198,7 +211,7 @@ public class Innov8Teleop_Tinkerbell extends LinearOpMode {
             //    robot.leftFruity.enableLed(true);
             //}
 
-            lift  = gamepad2.left_stick_y;
+            lift = gamepad2.left_stick_y;
             turn = -gamepad2.right_stick_y;
 
             // Normalize the values so neither exceed +/- 1.0
@@ -247,7 +260,7 @@ public class Innov8Teleop_Tinkerbell extends LinearOpMode {
             */
 
             // Send telemetry message to signify robot running;
-            telemetry.addData("lift",  "%.2f", left);
+            telemetry.addData("lift", "%.2f", left);
             telemetry.addData("turn", "%.2f", right);
             /*
             telemetry.addData("LeftFruityBlue", robot.leftFruity.blue());
@@ -257,10 +270,10 @@ public class Innov8Teleop_Tinkerbell extends LinearOpMode {
             telemetry.addData("RightFruityRed", robot.rightFruity.red());
             telemetry.addData("RightFruityGreen", robot.rightFruity.green());
             */
-           // telemetry.addData("startGlypht ", startPositionGlypht);
-           // telemetry.addData("CurrentGlypht", robot.glypht.getCurrentPosition());
+            // telemetry.addData("startGlypht ", startPositionGlypht);
+            // telemetry.addData("CurrentGlypht", robot.glypht.getCurrentPosition());
             telemetry.addData("LDir: ", leftDirection);
-            telemetry.addData("RDir: ",rightDirection);
+            telemetry.addData("RDir: ", rightDirection);
             telemetry.addData("rightM", robot.rightMotor.getPower());
             telemetry.addData("leftM", robot.leftMotor.getPower());
             telemetry.update();

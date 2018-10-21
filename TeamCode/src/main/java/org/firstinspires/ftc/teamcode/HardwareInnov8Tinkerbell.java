@@ -67,7 +67,7 @@ public class HardwareInnov8Tinkerbell {
         leftChain = hwMap.dcMotor.get("leftChain");
         leftChain.setDirection(DcMotor.Direction.FORWARD);
         rightChain = hwMap.dcMotor.get("rightChain");
-        rightChain.setDirection(DcMotor.Direction.FORWARD);
+        rightChain.setDirection(DcMotor.Direction.REVERSE);
 
         // Set all motors to zero power
         leftMotor.setPower(0);
