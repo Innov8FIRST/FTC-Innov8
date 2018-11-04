@@ -22,8 +22,8 @@ public class Innov8_Tinkerbell_redSafeZone extends LinearOpMode {
     int FDrive = 2;
     int teamColor = 0;   //0 = red   or 1 = blue
     int taskNumber = 0;   //used to determine the step that should be executed
-    double multR = 0.1;
-    double multL = 0.02;
+    double multR = 0.015;
+    double multL = 0.0081;
     double correctL = 1;  // 1 or -1
     double correctR = 1;  //1 or -1
 
@@ -59,8 +59,8 @@ public class Innov8_Tinkerbell_redSafeZone extends LinearOpMode {
             telemetry.addData("LeftBlue", robot.leftFruity.blue());
             telemetry.addData("startL", startPositionL);
             telemetry.addData("endL", endPositionL);
-            telemetry.addData("RightPower", robot.rightMotor.getPower());
-            telemetry.addData("LeftPower", robot.leftMotor.getPower());
+            telemetry.addData("RightPower", 10 * multR * correctR);
+            telemetry.addData("LeftPower", 10 * multL * correctL);
             telemetry.update();
 
             robot.rightMotor.setPower(10 * multR * correctR);

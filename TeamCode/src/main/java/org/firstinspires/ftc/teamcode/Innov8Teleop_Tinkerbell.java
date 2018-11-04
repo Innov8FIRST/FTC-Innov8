@@ -253,13 +253,11 @@ public class Innov8Teleop_Tinkerbell extends LinearOpMode {
 
             */
 
-            if (gamepad1.right_stick_button) {
+            if (gamepad1.y) {
                 rightDirection = rightDirection * -1;
-            }
-
-            if (gamepad1.left_stick_button) {
                 leftDirection = leftDirection * -1;
             }
+
 
             /*
             while(gamepad1.y) { // opens hand
